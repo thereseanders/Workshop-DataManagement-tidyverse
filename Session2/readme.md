@@ -1,6 +1,3 @@
-Data management in `R`: Session 2
-================
-
 Working with data frames in `R`
 ===============================
 
