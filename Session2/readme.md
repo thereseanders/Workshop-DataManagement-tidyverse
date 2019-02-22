@@ -436,5 +436,5 @@ A few additional notes on graphical options:
 * Same with the shapes and line types, see http://www.cookbook-r.com/Graphs/Shapes_and_line_types/.
 * `R` colors in all their glory: http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf.
 
-# References {-}
+# References
 Imai, Kosuke (2017): *Quantitative Social Science. An Introduction*. Princeton and Oxford: Princeton University Press.
