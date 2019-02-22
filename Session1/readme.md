@@ -1,1 +1,1 @@
-In this first session, we cover basics such as setting a working directory, arithmetic with `R`, data input, logical operators, basic indexing, data types, and basic functions such as sum(), mean(), names(), seq(), and rep().
+In this first session, we cover basics such as setting a working directory, arithmetic with `R`, data input, logical operators, basic indexing, data types, and basic functions such as `sum()`, `mean()`, `names()`, `seq()`, and `rep()`.
