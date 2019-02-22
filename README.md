@@ -38,3 +38,5 @@ Acknowledgements
 ================
 
 This workshop series was first taught in September 2016 as part of the data science training for the [Security and Political Economy Lab](https://dornsife.usc.edu/spec) at the University of Southern California.
+
+The first two intro sessions to basic `R` programming are heavily inspired by the first chapter of Kosuke Imai's (2017) book "Quantitative Social Science. An Introduction" (http://assets.press.princeton.edu/chapters/s11025.pdf).
