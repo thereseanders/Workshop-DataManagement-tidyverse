@@ -6,7 +6,7 @@ This workshop series is geared toward learning basic data management in `R`. Thi
 Sessions:
 
 1.  [**Intro R 1**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session1) (working directories, arithmetic, logical operators, basic indexing, data types, basic functions such as `sum()`, `mean()`, `names()`, `seq()`, `rep()`, etc.).
-2.  **Intro R 2** (installing packages, reading and writing data, dealing with missing data, data frames, indexing on data frames, getting an overview of the data with multivariate numerical and graphical summaries).
+2.  [**Intro R 2**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session2) (reading and writing data, dealing with missing data, data frames, indexing on data frames, getting an overview of the data with multivariate numerical and graphical summaries).
 3.  **Basic data management**: Introduction to `dplyr`.
 4.  **Data shaping and reshaping**: `tidyr` in connection with `dplyr`.
 5.  **Introduction to string operations** with `stringr`.
