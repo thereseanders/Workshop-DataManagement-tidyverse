@@ -42,31 +42,6 @@ summary(cow$year)
 
 
 ```
-## Warning: package 'dplyr' was built under R version 3.4.4
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```
-## Warning: package 'bindrcpp' was built under R version 3.4.4
-```
-
-```
 ##   ccode     country year milex_gdp        gdp milex
 ## 1   700 Afghanistan 1967        NA 1673333419    NA
 ## 2   700 Afghanistan 1968        NA 1373333367    NA
