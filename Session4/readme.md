@@ -371,3 +371,9 @@ head(merged_long, 3)
 ```r
 merged_wide <- spread(merged_long, data_origin, milex) 
 ```
+
+# Sources
+Correlates of War (COW) National Material Capabilities Data Version 4.0. http://www.correlatesofwar.org/data-sets/downloadable-files/national-material-capabilities-v4-0 (accessed Oct 2016).
+
+The World Bank: World Development Indicators. https://datacatalog.worldbank.org/dataset/world-development-indicators (accessed Oct 2016).
+(accessed Oct 2016).
