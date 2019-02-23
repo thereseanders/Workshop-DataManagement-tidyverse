@@ -271,12 +271,6 @@ fdi_new_sub <- filter(fdi_new_sub, !is.na(ccode))
 ## Handling duplicates
 Before re-shaping our data, we need to check for duplicates. `R` provides a number of built-in functions to execute this task. Here, we will write a snipped of custom code using `dplyr` to show which observations (based on the `ccode` variable) have duplicates and how many.
 
-```r
-dupes <- fdi_new_sub %>%
-  group_by(ccode) %>%
-  summarise(count = n()) %>%
-  filter(count > 1)
-```
 
 We have quite a few duplicate observations. In reality, we would want to go through each of these observations and inspect whether they are "true" duplicates, or whether they are produced in the process of attaching COW codes. Here, we will only go through two examples.
 
