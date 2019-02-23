@@ -1,7 +1,7 @@
 Plan for this workshop series
 =============================
 
-This workshop series is geared toward learning basic data management in `R`. This includes tasks like manipulating variables, creating new variables, subsetting data, reshaping data, and merging. We will also cover some introductory regular expression applications. In this workshop series we will cover only basic visualization methods in `R`. For a more thorough introduction to to `ggplot2`, see my workshops on [data visualization](https://github.com/thereseanders/Workshop-Intro-to-ggplot2)and creating [maps in `R`](https://github.com/thereseanders/Workshop-Maps-in-R).
+This workshop series is geared toward learning basic data management in `R`. This includes tasks like manipulating variables, creating new variables, subsetting data, reshaping data, and merging. We will also cover some introductory regular expression applications. In this workshop series we will cover only basic visualization methods in `R`. For a more thorough introduction to to `ggplot2`, see my workshops on [data visualization](https://github.com/thereseanders/Workshop-Intro-to-ggplot2) and creating [maps in `R`](https://github.com/thereseanders/Workshop-Maps-in-R).
 
 Sessions:
 
