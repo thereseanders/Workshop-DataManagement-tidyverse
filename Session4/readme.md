@@ -355,7 +355,7 @@ merged_long_averages <- merged_long %>%
   summarize(milex = mean(milex))
 ```
 
-We can use this format to plot the miliary expenditure for each of the data sets over time. Here, I use the `ggplot2` package (also from the "tidyverse") to show how to create over-time plots that use the properties of "tidy" data, namely the fact that a specific feature is represented with a single column (here `milex`), with additional columns specifying supplementary properties of this feature (here `data_origin`).
+We can use this format to plot the miliary expenditure for each of the data sets over time. Here, I use the `ggplot2` package (also from the "tidyverse") to show how to create over-time plots that use the properties of "tidy" data, namely the fact that a specific feature is represented with a single column (here `milex`), with additional columns specifying supplementary properties of this feature (here `data_origin`). Please note that these are both very basic graphs. For more customization of `ggplot2` graphs, see the [introductory workshop on data visualization with  `ggplot2`](https://github.com/thereseanders/Workshop-Intro-to-ggplot2).
 
 ```r
 library(ggplot2)
@@ -364,7 +364,7 @@ ggplot(merged_long,
   geom_point(alpha = 0.2)
 ```
 
-![](spec_rworkshop_ta_session4_git_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](figure-html/unnamed-chunk-13-1.png)<!-- -->
 
 ```r
 ggplot(merged_long_averages, 
@@ -372,7 +372,7 @@ ggplot(merged_long_averages,
   geom_line()
 ```
 
-![](spec_rworkshop_ta_session4_git_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
+![](figure-html/unnamed-chunk-13-2.png)<!-- -->
 
 ## `spread()`
 Suppose we wanted to revert our operation (or generall shape data from a long to a wide format), we can use `tidyr`'s `spread()` function. The syntax is similar to `gather()`.
