@@ -1,7 +1,7 @@
 Plan for this workshop series
 =============================
 
-This workshop series is geared toward learning basic data management in `R`. This includes tasks like manipulating variables, creating new variables, subsetting data, reshaping data, and merging. We will also cover some introductory regular expression applications. In this workshop series we will cover only basic visualization methods in `R`. Aspects like data analysis, web-scraping, or higher-level statistical programming are not covered.
+This workshop series is geared toward learning basic data management in `R`. This includes tasks like manipulating variables, creating new variables, subsetting data, reshaping data, and merging. We will also cover some introductory regular expression applications. In this workshop series we will cover only basic visualization methods in `R`. For a more thorough introduction to data visualization using `ggplot2`, see this workshop. 
 
 Sessions:
 
@@ -9,7 +9,7 @@ Sessions:
 2.  [**Intro R 2**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session2) (reading and writing data, dealing with missing data, data frames, indexing on data frames, getting an overview of the data with multivariate numerical and graphical summaries).
 3.  [**Basic data management**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session3): Introduction to `dplyr`.
 4.  [**Data shaping and reshaping**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session4): `tidyr` in connection with `dplyr`.
-5.  [**Introduction to string operations**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session5) with `stringr`.
+5.  [**Introduction to string operations**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session5) with `stringr`. Primer on web-scraping.
 6.  **Bringing it all together**: Advanced problems with `tidyr`, `dplyr`, and `stringr`.
 
 Getting started in `R`
