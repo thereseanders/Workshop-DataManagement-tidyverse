@@ -9,7 +9,7 @@ Sessions:
 2.  [**Intro R 2**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session2) (reading and writing data, dealing with missing data, data frames, indexing on data frames, getting an overview of the data with multivariate numerical and graphical summaries).
 3.  [**Basic data management**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session3): Introduction to `dplyr`.
 4.  [**Data shaping and reshaping**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session4): `tidyr` in connection with `dplyr`.
-5.  **Introduction to string operations** with `stringr`.
+5.  [**Introduction to string operations**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session5) with `stringr`.
 6.  **Bringing it all together**: Advanced problems with `tidyr`, `dplyr`, and `stringr`.
 
 Getting started in `R`
