@@ -10,7 +10,7 @@ Sessions:
 3.  [**Basic data management**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session3): Introduction to `dplyr`.
 4.  [**Data shaping and reshaping**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session4): `tidyr` in connection with `dplyr`.
 5.  [**Introduction to string operations**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session5) with `stringr`. Primer on web-scraping.
-6.  **Bringing it all together**: Advanced problems with `tidyr`, `dplyr`, and `stringr`.
+6.  [**Bringing it all together**](https://github.com/thereseanders/Workshop-DataManagement-R/tree/master/Session6): Advanced data cleaning tasks with `tidyr`, `dplyr`, and `stringr`.
 
 Getting started in `R`
 ======================
