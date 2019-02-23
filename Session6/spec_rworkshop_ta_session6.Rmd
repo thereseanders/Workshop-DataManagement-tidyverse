@@ -1,0 +1,215 @@
+---
+title: 'SPEC Lab `R` Workshop Series: Session 6'
+author: "Therese Anders"
+output: 
+  pdf_document: 
+    number_sections: yes
+    latex_engine: xelatex
+---
+
+# `for` Loops in `R`
+Loops are a staple of programming. Loops allow us to automate our code, and are particularily useful when you find yourself doing a task over and over again. While in practice, we try to vectorize our operations as much as possible (see the solution above where we convert factors to characters), being comfortable with loops is crucial for many programming tasks.
+
+## Basic loop structure
+General syntax of a for loop:
+
+`for(iterator in iterations){function/output}`
+
+Lets write a loop that prints out the numbers 1 through 10.
+```{r}
+for(i in 1:10){
+  print(i)
+}
+```
+
+Suppose, the numbers we wanted to print out are part of a vector. We can use loops to iterate through this vector.
+```{r}
+vec <- seq(11, 20, 1)
+for(k in vec){
+  print(k)
+}
+```
+
+**Exercise 1** What do you think does the following output do?
+```{r, results= 'hide'}
+for(l in 5:length(vec)){
+  print(l)
+}
+```
+
+Of course, we can use loops to automate more complex tasks. For example, we could use it to change a batch of variables to `character()`. To try this, re-load the data from session 5.
+```{r}
+data_new <- read.csv("hw5_data.csv")
+str(data_new)
+test1 <- data_new
+for(l in 1:ncol(test1)){
+  test1[,l] <- as.character(test1[,l])
+}
+str(test1)
+```
+
+As a more sophisticated version, we could convert only those variables that are factors (not numerical variables like  `Density.Pop....km2..`) to characters, using an `if` statement.
+```{r}
+test2 <- data_new
+for(k in 1:ncol(test2)){
+  if(is.factor(test2[,k])){
+    test2[,k] <- as.character(test2[,k])
+  }
+}
+str(test2)
+```
+
+# Data cleaning in `R`
+In this example, we will use our new data management skills to clean a data set for inclusion in SPEC's [IPE data resource](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/X093TV). The data are figures on US Foreign Direct Investment (FDI) from the Bureau of Economic Analysis. Here are the data cleaning tasks that we are going to do:
+
+1. Recode missing values.
+2. Delete the header and footer.
+3. Add COW country codes.
+4. Drop observations from combined countries. Drop duplicated observations from Poland, Bahamas, Hungary, Czech Republic, Russia, Jamaica, Trinidad and Tobago, Guatemala, and conflicted observations from Serbia/Yugoslavia, Russia/USSR, Zaire/Congo, Timor-Leste, Micronesia, and Samoa.
+5. Reshape data to long format.
+
+
+To start, lets read the data and take a look at it using the `View()` in RStudio.
+```{r, warning=F, message = F}
+library(foreign)
+library(tidyverse)
+fdi <- read.csv("fdidata.csv", 
+                stringsAsFactors = F)
+```
+
+## Recoding missing values
+The original data specifies a number of different ways of how missing values are coded, specifically `n.s.`, `(*)`, `--`, `---`, `----`, and `(D)`. In principle, we could recode the missing values with the following command.
+
+`fdi[fdi == "(D)" | fdi == "n.s." | fdi == "(*)" | fdi == "----" | fdi == "---" | fdi == "--"] <- NA`
+
+However, we could also make our life easier by specifying all possible values for `NA` when reading the data.
+```{r}
+fdi_nona <- read.csv("fdidata.csv", 
+                      stringsAsFactors = F,
+                      na.strings = c("(D)", "n.s.", "(*)", "----", "---", "--"))
+```
+
+## Dropping header and footer
+There are a number of ways we could drop the header and footer. In principle, we could just inspect the data frame and manually delete all the rows that belong to the header or footer. However, there is a pattern here: The header and footer rows do not have entries in the second column. Note that when the value of the second column is `NA`, `R` would also drop that row. Therefore, we have to account for both, rows that have a non-empty value or `NA` in the second column, when selecting the rows to eliminate.
+```{r}
+empty <- fdi_nona[,2] == ""
+head(empty, 10)
+fdi_new <- fdi_nona[empty %in% c(NA, F),]
+```
+
+Subsequently, we want to turn the second row into the column names and drop the first and second rows.
+```{r}
+names(fdi_new) <- unname(fdi_new[2,])
+fdi_new <- fdi_new[-c(1,2),]
+```
+
+## Stripping white space and dropping irrelevant observations
+After renaming the first column of our new dataframe to `country`, lets look at the observations (i.e. countries that we have in this data set). Use the `View()` function or the Environment menu to inspect the values of the variable `country`.
+```{r}
+names(fdi_new)[1] <- "country"
+head(fdi_new$country)
+```
+
+The first thing to notice is that many elements of the `country` variable have leading whitespace (i.e. spaces or tabs). This is a problem when trying to attach countrycodes later on. We will use operations from the `stringr` package to get rid of this leading whitespace. Note that we do **not** want to remove all white space, because country names such as `Czech Republic` would not be recognized by the `countrycode` package any longer if we stripped the character value from all whitespace. We will use `stringr`'s `str_trim()` function to remove leading (and trailing) whitespace from all elements of the variable `country`.
+```{r}
+fdi_new$country[5]
+```
+
+Second, there are a number of observations in the `country` variable that do not contain proper country names, such as `Other`, `Other Western Hemisphere`, or `Latin America and Other Western Hemisphere`. We can use regular expressions to drop these observations.
+```{r}
+nrow(fdi_new)
+fdi_new_sub <- fdi_new %>%
+  mutate(country = str_trim(country)) %>%
+  filter(!str_detect(country, "[Oo]ther"))
+nrow(fdi_new_sub)
+```
+
+## Adding COW country codes
+Next, we will use the [`countrycode`](https://cran.r-project.org/web/packages/countrycode/countrycode.pdf) package to add COW country codes to the data. Note, that this does not work perfect here--some countrynames are not matched. For demonstration purposes we will simply drop observations that were not matched. In reality, we might have to add some country codes manually, or use a more sophisticated algorithm to attach country codes. Note that the countrycode package allows you to specify custom country dictionaries, for example if you needed to attach Gleditsch-Ward rather than COW countrycodes.
+```{r, warning=F, message=F}
+# install.packages("countrycode")
+library(countrycode)
+fdi_new_sub <- fdi_new_sub %>%
+  mutate(ccode = countrycode(country, "country.name", "cown"))
+```
+
+We can inspect the values that did not receive a COW code. The algorithm works as expected (Serbia does not have its own countrycode in the COW system). All the un-matched countries are either not fully sovereign regions (based on the COW system), continents, or smaller island nations that are not considered part of the international system, according to COW. We therefore drop all observations that did not receive a `ccode` coding.
+```{r}
+fdi_new_sub$country[is.na(fdi_new_sub$ccode)] 
+fdi_new_sub <- filter(fdi_new_sub, !is.na(ccode))
+```
+
+## Handling duplicates
+Before re-shaping our data, we need to check for duplicates. `R` provides a number of built-in functions to execute this task. Here, we will write a snipped of custom code using `dplyr` to show which observations (based on the `ccode` variable) have duplicates and how many.
+```{r}
+dupes <- fdi_new_sub %>%
+  group_by(ccode) %>%
+  summarise(count = n()) %>%
+  filter(count > 1)
+```
+
+We have quite a few duplicate observations. In reality, we would want to go through each of these observations and inspect whether they are "true" duplicates, or whether they are produced in the process of attaching COW codes. Here, we will only go through two examples.
+
+First, let us look at all the duplicates with COW code 200 (United Kingdom). If we inspect all the observations, we see that we have one "true" UK observations, and a number of other observations that contain the word "United Kingdom," but do not refere to the mainland. What to do with these duplicates is a substantive question that needs to be decided by the researcher. Here, for the purpose of demonstation, we will assume that all the observation belong to the UK and sum over them (taking into account the NA values).
+```{r}
+ccode200 <- fdi_new_sub %>%
+  filter(ccode == 200)
+```
+
+Second, let us look at the cuplicates with COW code 365 (Russia). We can see that these are not "true" duplicates, that is no value is observed in two rows in the same year. We can therefore simply "melt" these three variables together to create one row for ccode 365.
+```{r}
+ccode365 <- fdi_new_sub %>%
+  filter(ccode == 365)
+```
+
+Depending on the type of duplicate, we might want to apply different functions to each instance of duplication. For simplicity, here we simply sum over all duplicates, excluding missing values. This will achieve the desired transformation for both the UK and the Russia duplicates. Note that before summing, we will have to convert our values to class `numeric`. Note also that upon applying the `summarise_if()` command, we loose the information on the `country` variable that contains the name of the country. There are ways to retain this information (for example by subsequently attaching the countryname with the `countrycode` package, see below).
+```{r, warning=F, message = F}
+for(i in 2:ncol(fdi_new_sub)){
+  fdi_new_sub[,i] <- as.numeric(fdi_new_sub[,i])
+}
+str(fdi_new_sub)
+
+fdi_new_sub_nodupes_alt <- fdi_new_sub %>%
+  group_by(ccode) %>%
+  summarise_if(is.numeric, funs(sum(., na.rm = T)))
+```
+
+Unfortunately, this last version returns 0 for columns that have all `NA` values. We will therefore write a custom `function` to pass to the `summarise_if()` wrapper. The general syntax of a function is the following.
+
+`functionname <- function(operand){operation, return value}`.
+
+Within the function we use an `if...else` statement. The `if...else` statement specifies a conditional operation with the following general syntax:
+
+`if(condition is true){output} else {output}`.
+
+```{r}
+func_sum <- function(x){
+  if(all(is.na(x))){
+    return(NA)
+  } else {
+    return(sum(x, na.rm = T))
+  }
+}
+
+fdi_new_sub_nodupes <- fdi_new_sub %>%
+  group_by(ccode) %>%
+  summarise_if(is.numeric, funs(func_sum))
+```
+
+## Reshaping
+The original data is in wide format. To make it compatible with the IPE data resource (and most other panel data sets) we need to reshape it into the long format, with one column indicating the country, another indicator accounting for the year, and lastly a column capturing the values of the respective indicator. In this case, the entire dataframe of the original data captures only one variable, namely "Outward FDI stocks from the US in USD (millions), all industries, BEA [OFS]." For simplicity, we will call this variable `outward_fdi_all`.
+```{r}
+fdi_long <- fdi_new_sub_nodupes %>%
+  # re-shape to long format
+  gather(year, outward_fdi_all, 2:ncol(fdi_new_sub_nodupes)) %>%
+  # Re-attach country names using countrycode package
+  mutate(countryname = countrycode(ccode, "cown", "country.name"))
+```
+
+The result is a clean data frame that can now be merged into the IPE data resource.
+```{r}
+head(fdi_long)
+```
+
+# Sources {-}
+U.S. Bureau of Economic Analysis, "U.S. Direct Investment Abroad, U.S. Direct Investment Position Abroad on a Historical-Cost Basis," http://www.bea.gov/international/di1usdbal.htm (accessed Jun 21 2016).
